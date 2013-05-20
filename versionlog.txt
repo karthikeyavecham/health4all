@@ -1,0 +1,10 @@
+Health4All VersionLog
+
+Version, 1.0, 10-Jan-2013 
+-------------------------
+Features:
+Patient Registration
+Reports
+
+Databse Changes : 
+Users.username --> length=20
