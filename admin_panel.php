@@ -69,7 +69,8 @@ if (isset($_POST['search']))
 	else if(($_POST['search_by']=="username"))
 	{
 		$getuid="SELECT user_id from users WHERE (users.$_POST[search_by] LIKE '%$_POST[search_text]%')";
-		$uid=mysql_fetch_array(mysql_query($getuid))['user_id'];
+		$uidrarray=mysql_fetch_array(mysql_query($getuid));
+		$uid=$uidarray['user_id'];
 		$viewquery = "SELECT * 
 			FROM user_activity
 			INNER JOIN patient_visits 
