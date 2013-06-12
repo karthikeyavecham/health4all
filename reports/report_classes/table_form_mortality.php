@@ -42,30 +42,57 @@
 </table>
 
 <table>
-<tr>
-<td width="350px"><input type="checkbox" id="by_age" onclick="age();">filter By age</td>
-<td width="200px"><input type="checkbox" id="by_weight" onclick="weight();">filter By Weight</td></tr>
-<tr>
-<td><div id="by_age_view" style="display:none">
-<table>
-<tr><td colspan="2"><b><u>Age At Admission:</u></b></td></tr>
-<tr><td><b>From :</b></td><td><input type="text" name="from_age_yrs" maxlength="3" size="2">Yrs <input type="text" name="from_age_mts" size="2" maxlength="2">Mths <input type="text" name="from_age_days" maxlength="2" size="2">days</td></tr>
-<tr><td><b>To :</b></td><td><input type="text" name="to_age_yrs" maxlength="3" size="2">Yrs <input type="text" name="to_age_mts" size="2" maxlength="2">Mths <input type="text" name="to_age_days" maxlength="2" size="2">days</td></tr>
-</table>
-</div></td>
-<td><div id="by_weight_view" style="display:none">
-<table>
-<tr><td colspan="2"><b><u>Weigth At Admission:</u></b></td></tr>
-<tr><td><b>From :</td></b><td><input type="text" name="from_wt_kgs" size="2" maxlength="3">kgs <input type="text" name="from_wt_gms" size="2" maxlength="3">gms</td></tr>
-<tr><td><b>To :</b></td><td><input type="text" name="to_wt_kgs" size="2" maxlength="3">kgs <input type="text" name="to_wt_gms" size="2" maxlength="3">gms</td></tr>
-</table>
-</div><td></tr>
+	<tr>
+	<td width="350px"><input type="checkbox" id="by_age" onclick="age();">Filter By Age</td>
+	<td width="200px"><input type="checkbox" id="by_weight" onclick="weight();">Filter By Weight</td>
+	<td width="200px"><input type="checkbox" id="gest_weeks" onclick="gestation();">Gestation</td>
+	<td width="200px"><input type="checkbox" id="in_out" onclick="inborn_outborn();">Inborn/Outborn</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="by_age_view" style="display:none">
+			<table>
+			<tr><td colspan="2"><b><u>Age At Admission:</u></b></td></tr>
+			<tr><td><b>From :</b></td><td><input type="text" name="from_age_yrs" maxlength="3" size="2">Yrs <input type="text" name="from_age_mts" size="2" maxlength="2">Mths <input type="text" name="from_age_days" maxlength="2" size="2">days</td></tr>
+			<tr><td><b>To :</b></td><td><input type="text" name="to_age_yrs" maxlength="3" size="2">Yrs <input type="text" name="to_age_mts" size="2" maxlength="2">Mths <input type="text" name="to_age_days" maxlength="2" size="2">days</td></tr>
+			</table>
+			</div>
+		</td>
+		<td>
+			<div id="by_weight_view" style="display:none">
+			<table>
+			<tr><td colspan="2"><b><u>Weight At Admission:</u></b></td></tr>
+			<tr><td><b>From :</td></b><td><input type="text" name="from_wt_kgs" size="2" maxlength="3">kgs <input type="text" name="from_wt_gms" size="2" maxlength="3">gms</td></tr>
+			<tr><td><b>To :</b></td><td><input type="text" name="to_wt_kgs" size="2" maxlength="3">kgs <input type="text" name="to_wt_gms" size="2" maxlength="3">gms</td></tr>
+			</table>
+			</div>
+		</td>
+		<td>
+			<div id="gestation" style="display:none">
+			<table>
+			<tr><td colspan="2"><b><u>No. of weeks</u></b></td></tr>
+			<tr><td><b>>37</td></b><td><input type="radio" name="gest_weeks" value=">37"></td></tr>
+			<tr><td><b>34-37</td></b><td><input type="radio" name="gest_weeks" value="34-37"></td></tr>
+			<tr><td><b><34</td></b><td><input type="radio" name="gest_weeks" value="<37"></td></tr>
+			</table>
+			</div>
+		</td>
+		<td>
+			<div id="inborn-outborn" style="display:none">
+			<table>
+			<td><b>Inborn</td></b><td><input type="radio" name="delivery_location_type" value="IN"></td>
+			<td><b>Outborn</td></b><td><input type="radio" name="delivery_location_type" value="OUT"></td>
+			</table>
+			</div>
+		</td>
+	</tr>
 </table>
 
 <input type="submit" name="submit">
 
 
 <script>
+
 function weight() {
 if(document.getElementById("by_weight").checked)
 {document.getElementById("by_weight_view").style.display="block";}
@@ -78,6 +105,17 @@ if(document.getElementById("by_age").checked)
 else {document.getElementById("by_age_view").style.display="none";}
 }
 
+function gestation() {
+if(document.getElementById("gest_weeks").checked)
+{document.getElementById("gestation").style.display="block";}
+else {document.getElementById("gestation").style.display="none";}
+}
+
+function inborn_outborn() {
+if(document.getElementById("in_out").checked)
+{document.getElementById("inborn-outborn").style.display="block";}
+else {document.getElementById("inborn-outborn").style.display="none";}
+}
 window.onload = onchangeajax(100);
 
 function onchangeajax(pid)

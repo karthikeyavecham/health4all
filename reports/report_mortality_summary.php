@@ -49,6 +49,18 @@
  $dept= "AND (patient_visits.department_id='" . $_POST['department'] . "')";
  }
  else $dept="";
+
+ if ($_POST['delivery_location_type']!=""){
+ $in_out_born="AND (patients.delivery_location_type='" . $_POST['delivery_location_type'] . "')";}
+ else $in_out_born="";
+
+ if ($_POST['gest_weeks']!=""){
+	if ($_POST['gest_weeks']==">37"){
+ 		$gest=" AND (gestation>'37')";}
+	else if ($_POST['gest_weeks']=="<34"){
+ 		$gest=" AND (gestation<'34')";}
+	else{ $gest=" AND (gestation BETWEEN 34 AND 37)";}
+ }else $gest="";
  
  if($_POST['from_wt_kgs']=="") {$_POST['from_wt_kgs']="0";}
  if($_POST['from_wt_gms']=="") {$_POST['from_wt_gms']="0";}
@@ -149,7 +161,7 @@ if(($_POST['from_age_yrs'] > $_POST['to_age_yrs']) OR ($_POST['from_age_mts'] > 
  echo "<b><u>Weight</u> : </b>"; if($weight!="") {echo"From (" . $_POST['from_wt_kgs'] . "kgs " . $_POST['from_wt_gms'] . "gms) To (" . $_POST['to_wt_kgs'] . "kgs " . $_POST['to_wt_gms'] . "gms)";} else {echo "ALL";}
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Age</u> : </b>"; if($age!="") {echo"From (" . $_POST['from_age_yrs'] . "yrs " . $_POST['from_age_mts'] . "mths " . $_POST['from_age_days'] . "days) To (" . $_POST['to_age_yrs'] . "yrs " . $_POST['to_age_mts'] . "mths " . $_POST['to_age_days'] . "days)"; } else {echo "ALL";}
  
- $query=	"SELECT
+ $query=		"SELECT
 				Month(admit_date) \"Month\",
 				Year(admit_date) \"Year\",
 				SUM(CASE WHEN visit_id = admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"IP\",
@@ -165,12 +177,10 @@ if(($_POST['from_age_yrs'] > $_POST['to_age_yrs']) OR ($_POST['from_age_mts'] > 
 				SUM(CASE WHEN visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
 				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\"				
 			FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
-			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $age . ")
+			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")
 			GROUP BY Month(admit_date), Year(admit_date)
 			ORDER BY Year(admit_date),Month(admit_date) ASC";
- 
- 
- 
+
  $result = mysql_query($query);
  if(mysql_num_rows($result) != 0) {
  echo "Note:<br>";
@@ -232,7 +242,7 @@ if(($_POST['from_age_yrs'] > $_POST['to_age_yrs']) OR ($_POST['from_age_mts'] > 
 				SUM(CASE WHEN visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
 				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\"				
 			FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
-			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $age . ")";
+			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")";
  
  $result_total = mysql_query($query_total);
  echo "</tbody><tfoot>";
