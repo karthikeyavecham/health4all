@@ -30,9 +30,9 @@
  <!-- begin right div content -->
  <div id="right">
  
- <h3>Report : Mortality</h3>
+ <h3>Report : Treatment</h3>
 
-<form action="report_mortality_summary.php" method="post">
+<form action="report_treatment.php" method="post">
 <?php require_once "report_classes/table_form_mortality.php";?>
 </form>
 <br>
@@ -56,10 +56,10 @@
 
  if ($_POST['gest_weeks']!=""){
 	if ($_POST['gest_weeks']==">37"){
- 		$gest=" AND (gestation > 37 )";}
-	if ($_POST['gest_weeks']=="<34"){
- 		$gest=" AND (gestation < 34 )";}
-	if ($_POST['gest_weeks']=="34-37"){ $gest=" AND (gestation BETWEEN 34 AND 37)";}
+ 		$gest=" AND (gestation>'37')";}
+	else if ($_POST['gest_weeks']=="<34"){
+ 		$gest=" AND (gestation<'34')";}
+	else{ $gest=" AND (gestation BETWEEN 34 AND 37)";}
  }else $gest="";
  
  if($_POST['from_wt_kgs']=="") {$_POST['from_wt_kgs']="0";}
@@ -159,7 +159,7 @@ if(($_POST['from_age_yrs'] > $_POST['to_age_yrs']) OR ($_POST['from_age_mts'] > 
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Area</u> : </b>"; $a=0; foreach($_POST['area'] as $ar) { if($ar!=""){$query_area= "SELECT * FROM areas WHERE area_id='" . $ar . "'"; $result_area = mysql_query($query_area); $record_area = mysql_fetch_array($result_area); if($a!='0'){echo ", ";} echo $record_area['area_name']; $a++;} else {echo "ALL"; break;}} } 
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Gender</u> : </b>"; if($_POST['gender']=="M"){echo "Male";} elseif($_POST['gender']=="F"){echo "Female";} else {echo "ALL";} echo"</br>";
  echo "<b><u>Weight</u> : </b>"; if($weight!="") {echo"From (" . $_POST['from_wt_kgs'] . "kgs " . $_POST['from_wt_gms'] . "gms) To (" . $_POST['to_wt_kgs'] . "kgs " . $_POST['to_wt_gms'] . "gms)";} else {echo "ALL";}
- echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Age</u> : </b>"; if($age!="") {echo"From (" . $_POST['from_age_yrs'] . "yrs " . $_POST['from_age_mts'] . "mths " . $_POST['from_age_days'] . "days) To (" . $_POST['to_age_yrs'] . "yrs " . $_POST['to_age_mts'] . "mths " . $_POST['to_age_days'] . "days)"; } else {echo "ALL";} 
+ echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Age</u> : </b>"; if($age!="") {echo"From (" . $_POST['from_age_yrs'] . "yrs " . $_POST['from_age_mts'] . "mths " . $_POST['from_age_days'] . "days) To (" . $_POST['to_age_yrs'] . "yrs " . $_POST['to_age_mts'] . "mths " . $_POST['to_age_days'] . "days)"; } else {echo "ALL";}
 if($_POST['gest_weeks'])
 {echo "&nbsp;&nbsp;&nbsp;<b><u>Gestation</u> : ". $_POST['gest_weeks'] ."</b>";}
 else{echo "&nbsp;&nbsp;&nbsp;<b><u>Gestation</u></b> : ALL";}
@@ -170,33 +170,33 @@ else{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u></b> : ALL";}
  $query=		"SELECT
 				Month(admit_date) \"Month\",
 				Year(admit_date) \"Year\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"IP\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"TIP\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = '' THEN 1 ELSE 0 END) \"ND\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = '' THEN 1 ELSE 0 END) \"TND\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"D\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"TD\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"L\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"TL\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"A\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"TA\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\"				
-			FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
-			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")
-			GROUP BY Month(admit_date), Year(admit_date)
-			ORDER BY Year(admit_date),Month(admit_date) ASC";
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"IP\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"TIP\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = '' THEN 1 ELSE 0 END) \"ND\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = '' THEN 1 ELSE 0 END) \"TND\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"D\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"TD\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"L\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"TL\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"A\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"TA\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\",treatment_type				
+				FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
+				INNER JOIN patient_treatments ON patient_visits.visit_id = patient_treatments.visit_id
+				WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")
+				GROUP BY Month(admit_date), Year(admit_date), treatment_type
+				ORDER BY Year(admit_date),Month(admit_date) ASC";
 
  $result = mysql_query($query);
  if(mysql_num_rows($result) != 0) {
-echo "</br>";
- echo "Note:";
+ echo "Note:<br>";
  echo "Mortality = Deaths / (Admissions - Not Discharged cases)";
 
  $i=1;
  echo "<table id=\"table-his\">";
  echo "<thead>";
- echo "<tr><th rowspan=\"2\">S.no</th>"; echo "<th rowspan=\"2\">Year</th>"; echo "<th rowspan=\"2\">Month</th>"; echo "<th rowspan=\"2\">Admissions</th>"; echo "<th rowspan=\"2\" align=\"center\">Not Discharged</th>"; echo "<th colspan=\"4\" align=\"center\">Discharged</th>";  echo "<th rowspan=\"2\" align=\"center\">Death</th>"; echo "<th rowspan=\"2\" align=\"center\">Mortality %</th></tr>"; 
+ echo "<tr><th rowspan=\"2\">S.no</th>"; echo "<th rowspan=\"2\">Admissions</th>"; echo "<th rowspan=\"2\" align=\"center\">Not Discharged</th>"; echo "<th colspan=\"4\" align=\"center\">Discharged</th>";  echo "<th rowspan=\"2\" align=\"center\">Death</th>"; echo "<th rowspan=\"2\" align=\"center\">Mortality %</th>";echo "<th rowspan=\"2\" align=\"center\">Treatment Type</th></tr>"; 
  echo "<tr><th>Normal</th>"; echo "<th>LAMA</th>"; echo "<th>Absconded</th>"; echo "<th>Total</th>";
  echo "</thead>";
  echo "<tbody>";
@@ -220,8 +220,6 @@ echo "</br>";
  } else $totalM="0.0";
  echo "<tr>";
  echo "<td>".$i."</td>";
- echo "<td>". $record['Year'] ."</td>";
- echo "<td>". $arr_m[$record['Month']] ."</td>";
  echo "<td>". $totalIP ."</td>";
  echo "<td>". $totalND ."</td>";
  echo "<td>". $totalD ."</td>";
@@ -230,26 +228,28 @@ echo "</br>";
  echo "<td>". $total ."</td>";
  echo "<td>". $totalDH ."</td>";
  echo "<td>". $totalM ."</td>";
+ echo "<td>". $record['treatment_type'] ."</td>";
  echo "</tr>";
  $i++;
  }
  $query_total=	"SELECT
 				Month(admit_date) \"Month\",
 				Year(admit_date) \"Year\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"IP\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"TIP\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = '' THEN 1 ELSE 0 END) \"ND\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = '' THEN 1 ELSE 0 END) \"TND\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"D\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"TD\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"L\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"TL\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"A\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"TA\",
-				SUM(CASE WHEN visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
-				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\"				
-			FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
-			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")";
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"IP\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome!= 'transfer' THEN 1 ELSE 0 END) \"TIP\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = '' THEN 1 ELSE 0 END) \"ND\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = '' THEN 1 ELSE 0 END) \"TND\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"D\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'discharge' THEN 1 ELSE 0 END) \"TD\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"L\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'lama' THEN 1 ELSE 0 END) \"TL\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"A\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'absconded' THEN 1 ELSE 0 END) \"TA\",
+				SUM(CASE WHEN patient_visits.visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
+				SUM(CASE WHEN patient_visits.visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\",treatment_type		
+				FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
+				INNER JOIN patient_treatments ON patient_visits.visit_id = patient_treatments.visit_id
+				WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")";
  
  $result_total = mysql_query($query_total);
  echo "</tbody><tfoot>";
@@ -271,7 +271,7 @@ echo "</br>";
  $totalM=number_format((($totalDH/($totalIP-$totalND))*100),1);
  } else $totalM="0.0";
  echo "<tr><b>";
- echo "<td colspan='3' align='center'>Total</td>";
+ echo "<td colspan='1' align='center'>Total</td>";
  echo "<td>". $totalIP ."</td>";
  echo "<td>". $totalND ."</td>";
  echo "<td>". $totalD ."</td>";

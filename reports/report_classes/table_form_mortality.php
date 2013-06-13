@@ -46,7 +46,7 @@
 	<td width="350px"><input type="checkbox" id="by_age" onclick="age();">Filter By Age</td>
 	<td width="200px"><input type="checkbox" id="by_weight" onclick="weight();">Filter By Weight</td>
 	<td width="200px"><input type="checkbox" id="gest_weeks" onclick="gestation();">Gestation</td>
-	<td width="200px"><input type="checkbox" id="in_out" onclick="inborn_outborn();">Inborn/Outborn</td>
+	<td width="200px"><input type="checkbox" id="in_out" onclick="inborn_outborn();">Delivery Location Type</td>
 	</tr>
 	<tr>
 		<td>
@@ -73,7 +73,7 @@
 			<tr><td colspan="2"><b><u>No. of weeks</u></b></td></tr>
 			<tr><td><b>>37</td></b><td><input type="radio" name="gest_weeks" value=">37"></td></tr>
 			<tr><td><b>34-37</td></b><td><input type="radio" name="gest_weeks" value="34-37"></td></tr>
-			<tr><td><b><34</td></b><td><input type="radio" name="gest_weeks" value="<37"></td></tr>
+			<tr><td><b><34</td></b><td><input type="radio" name="gest_weeks" value="<34"></td></tr>
 			</table>
 			</div>
 		</td>
