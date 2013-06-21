@@ -71,7 +71,7 @@ span.link a:hover span
 		</table>
 	</td></tr>
 	<tr>
-		<td style="vertical-align:top; padding-right:0px; padding-top:20px;">
+		<td style="position:relative; vertical-align:top; padding-right:0px; padding-top:20px;">
 			<table>
 				<tr><td><input type="button" id="button_1" value="Patient Info" onclick="reveal('div_1','button_1');" style="width:100%; background:#febbbb"></td></tr>
 				<tr><td><input type="button" id="button_2" value="Birth Info" onclick="reveal('div_2','button_2');" style="width:100%;"></td></tr>
@@ -469,7 +469,6 @@ span.link a:hover span
 					<div class="scrollbar" style=" height: 180px; ">
 					<table id="dataTable">
 						<tr id="dataTablehead" hidden>
-						<th></th>
 						<th>Date</th>
 						<th>Time</th>
 						<th>Treatment Type</th>
@@ -487,8 +486,41 @@ span.link a:hover span
 							<td><textarea rows="1" cols="20" name="notes[]"></textarea></td>
 						</tr>
 					</table>
+					<table>
+					<?php
+					$query_obstetric= "SELECT * 
+							FROM patient_treatments 
+							WHERE visit_id='".$record['visit_id']."'";
+					
+					$result_obstetric = mysql_query($query_obstetric);
+					if(mysql_num_rows($result_obstetric)!= 0) { ?>
+					<tr>
+						<th></th>
+						<th>Date</th>
+						<th>Time</th>
+						<th>Treatment Type</th>
+						<th>Treatment</th>
+						<th>Duration(Hrs,Dys,Mns)</th>
+						<th>Notes</th>
+					</tr>
+				<?php	
+					while($record_obstetric = mysql_fetch_array($result_obstetric)){
+				?>
+					<tr>
+						<td><input type="checkbox" name="chk"/></td>
+							<td><input type="text" name="treatment_date[]" value="<?php echo $record_obstetric['treatment_date']; ?>"></td>
+							<td><input type="text" name="treatment_time[]" value="<?php echo $record_obstetric['treatment_time']; ?>"></td>
+							<td><input type="text" name="treatment_type[]" value="<?php echo $record_obstetric['treatment_type']; ?>"></td>
+							<td><input type="text" name="treatment[]" value="<?php echo $record_obstetric['treatment']; ?>"></td>
+							<td><input type="text" name="duration[]" value="<?php echo $record_obstetric['duration']; ?>"></td>
+							<td><textarea rows="1" cols="20" name="notes[]" value="<?php echo $record_obstetric['notes']; ?>"></textarea></td>
+					</tr>
+				<?php } 
+				}?>
+				</table>
 					</div>
 				</div>
+
 				<div id="div_5" style="display:none;">
 					<table width="100%" id="table-tab">
 						<tr>

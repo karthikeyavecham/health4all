@@ -199,6 +199,8 @@ else{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u></b> : ALL";}
  echo "<tr><th rowspan=\"2\">S.no</th>"; echo "<th rowspan=\"2\">Admissions</th>"; echo "<th rowspan=\"2\" align=\"center\">Not Discharged</th>"; echo "<th colspan=\"4\" align=\"center\">Discharged</th>";  echo "<th rowspan=\"2\" align=\"center\">Death</th>"; echo "<th rowspan=\"2\" align=\"center\">Mortality %</th>";echo "<th rowspan=\"2\" align=\"center\">Treatment Type</th></tr>"; 
  echo "<tr><th>Normal</th>"; echo "<th>LAMA</th>"; echo "<th>Absconded</th>"; echo "<th>Total</th>";
  echo "</thead>";
+    $csv_hdr = " S.no,Admissions,Not Discharged,Normal, LAMA, Absconded, Total, Death, Mortality %, Treatment Type";
+    $csv_output="";
  echo "<tbody>";
  $arr_m = array("","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
  while ($record = mysql_fetch_array($result)){
@@ -220,15 +222,25 @@ else{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u></b> : ALL";}
  } else $totalM="0.0";
  echo "<tr>";
  echo "<td>".$i."</td>";
+$csv_output .= $i . ", ";
  echo "<td>". $totalIP ."</td>";
+$csv_output .= $totalIP . ", ";
  echo "<td>". $totalND ."</td>";
+$csv_output .= $totalND . ", ";
  echo "<td>". $totalD ."</td>";
+$csv_output .= $totalD . ", ";
  echo "<td>". $totalL ."</td>";
+$csv_output .= $totalL . ", ";
  echo "<td>". $totalA ."</td>";
+$csv_output .= $totalA . ", ";
  echo "<td>". $total ."</td>";
+$csv_output .= $total . ", ";
  echo "<td>". $totalDH ."</td>";
+$csv_output .= $totalDH . ", ";
  echo "<td>". $totalM ."</td>";
+$csv_output .= $totalM . ", ";
  echo "<td>". $record['treatment_type'] ."</td>";
+$csv_output .= $record['treatment_type'] . "\n ";
  echo "</tr>";
  $i++;
  }
@@ -291,11 +303,18 @@ else{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u></b> : ALL";}
  else
  
  {
- Echo "<br><br><b style=\"color:red;\">No data in this given dates</b>";
+ echo "<br><br><b style=\"color:red;\">No data in this given dates</b>";
  } 
- }
+?>
+<form name="export" action="export.php" method="post">
+<input type="submit" value="Export table to CSV">
+<input type="submit" value="Print report" onclick="window.print();">
+<input type="hidden" value="<?php echo $csv_hdr; ?>" name="csv_hdr">
+<input type="hidden" value="<?php echo $csv_output; ?>" name="csv_output">
+</form>
+<?php
+ }?>
 
- ?>
   <!-- end right div content -->
  </div>
 
