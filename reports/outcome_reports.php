@@ -30,10 +30,10 @@
  <!-- begin right div content -->
  <div id="right">
  
- <h3>Report : Mortality</h3>
+ <h3>Report : Outcome</h3>
 
-<form action="report_mortality_summary.php" method="post">
-<?php require_once "report_classes/table_form_mortality.php";?>
+<form action="outcome_reports.php" method="post">
+<?php require_once "report_classes/table_form_outcome.php";?>
 </form>
 <br>
 
@@ -61,6 +61,63 @@
  		$gest=" AND (gestation < 34 )";}
 	if ($_POST['gest_weeks']=="34-37"){ $gest=" AND (gestation BETWEEN 34 AND 37)";}
  }else $gest="";
+
+
+
+if ($_POST['weight_death']!=""){
+	if ($_POST['weight_death']==">2500"){
+ 		$wgt=" AND (outcome='death') AND (discharge_weight > 2500)";}
+	if ($_POST['weight_death']=="1500-2499"){
+ 		$wgt=" AND (outcome='death') AND ((discharge_weight BETWEEN 1500 AND 2499))"; }
+	if ($_POST['weight_death']=="1000-1499")
+	{ $wgt=" AND (outcome='death') AND ((discharge_weight BETWEEN 1000 AND 1499))"; }
+	if ($_POST['weight_death']=="<1000"){
+ 		$wgt=" AND (outcome='death') AND (discharge_weight < 1000)";}
+ }else $wgt="";
+
+
+
+if ($_POST['duration_days']!=""){
+	if ($_POST['duration_days']=="<1")
+	{
+ 		$duration=" AND (datediff(outcome_date,admit_date)<1)";
+	}
+	if ($_POST['duration_days']=="1-3")
+	{
+ 		$duration=" AND (datediff(outcome_date,admit_date) BETWEEN 1 AND 3 )";
+	}
+	if ($_POST['duration_days']=="4-7")
+	{
+		$duration=" AND (datediff(outcome_date,admit_date) BETWEEN 4 AND 7)"; 
+	}
+	if ($_POST['duration_days']==">7")
+	{
+		$duration=" AND (datediff(outcome_date,admit_date) >7)"; 
+	}
+}
+else $duration="";
+
+
+if ($_POST['death_age']!=""){
+	if ($_POST['death_age']=="<1")
+	{
+ 		$age_death=" AND ((outcome='death') AND ((age_years<=0) AND (age_months<=0) AND (age_days<1)))";
+	}
+	if ($_POST['death_age']=="1-6")
+	{
+ 		$age_death=" AND ((outcome='death') AND ((age_years<=0) AND (age_months<=0) AND (age_days BETWEEN 1 AND 6)))"; 
+	}
+	if ($_POST['death_age']==">=7")
+	{
+		$age_death=" AND ((outcome='death') AND ((age_years<=0) AND (age_months<=0) AND (age_days>=7)))"; 
+	}
+}
+else $age_death="";
+
+
+ if ($_POST['outcome']!=""){
+ $outcome=" AND (outcome = '". $_POST['outcome'] . "')";	
+ }else $outcome="";
  
  if($_POST['from_wt_kgs']=="") {$_POST['from_wt_kgs']="0";}
  if($_POST['from_wt_gms']=="") {$_POST['from_wt_gms']="0";}
@@ -122,7 +179,7 @@ if(($_POST['from_age_yrs'] > $_POST['to_age_yrs']) OR ($_POST['from_age_mts'] > 
  $gender= "AND (patients.gender='" . $_POST['gender'] . "')";
  }
  else $gender="";
- 
+
  $unit=""; $i=0;
  foreach($_POST['unit'] as $un) {
  if($un!=""){
@@ -158,15 +215,24 @@ if(($_POST['from_age_yrs'] > $_POST['to_age_yrs']) OR ($_POST['from_age_mts'] > 
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Unit</u> : </b>"; $a=0; foreach($_POST['unit'] as $un) { if($un!=""){$query_unit= "SELECT * FROM units WHERE unit_id='" . $un . "'"; $result_unit = mysql_query($query_unit); $record_unit = mysql_fetch_array($result_unit); if($a!='0'){echo ", ";} echo $record_unit['unit_name']; $a++;} else {echo "ALL"; break;}}  
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Area</u> : </b>"; $a=0; foreach($_POST['area'] as $ar) { if($ar!=""){$query_area= "SELECT * FROM areas WHERE area_id='" . $ar . "'"; $result_area = mysql_query($query_area); $record_area = mysql_fetch_array($result_area); if($a!='0'){echo ", ";} echo $record_area['area_name']; $a++;} else {echo "ALL"; break;}} } 
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Gender</u> : </b>"; if($_POST['gender']=="M"){echo "Male";} elseif($_POST['gender']=="F"){echo "Female";} else {echo "ALL";} echo"</br>";
- echo "<b><u>Weight</u> : </b>"; if($weight!="") {echo"From (" . $_POST['from_wt_kgs'] . "kgs " . $_POST['from_wt_gms'] . "gms) To (" . $_POST['to_wt_kgs'] . "kgs " . $_POST['to_wt_gms'] . "gms)";} else {echo "ALL";}
- echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Age</u> : </b>"; if($age!="") {echo"From (" . $_POST['from_age_yrs'] . "yrs " . $_POST['from_age_mts'] . "mths " . $_POST['from_age_days'] . "days) To (" . $_POST['to_age_yrs'] . "yrs " . $_POST['to_age_mts'] . "mths " . $_POST['to_age_days'] . "days)"; } else {echo "ALL";} 
-if($_POST['gest_weeks'])
-{echo "&nbsp;&nbsp;&nbsp;<b><u>Gestation</u> : ". $_POST['gest_weeks'] ."</b>";}
-else{echo "&nbsp;&nbsp;&nbsp;<b><u>Gestation</u></b> : ALL";}
-if($_POST['delivery_location_type'])
-{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u> : ". $_POST['delivery_location_type'] ."BORN"."</b>";}
-else{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u></b> : ALL";}
- 
+echo "<b><u>Weight At Death</u> : </b>";
+if($_POST['weight_death'])
+{  echo" " . $_POST['weight_death'] . " gm";} else {echo "ALL ";}
+
+echo "&nbsp;&nbsp;&nbsp;<b><u>Age At Death</u> : </b>";
+if($_POST['death_age']) 
+{  echo" " . $_POST['death_age'] . " "; if($_POST['death_age']=='<1') echo "day"; else echo "days";} else {echo "ALL";} 
+if($_POST['outcome'])
+{echo "&nbsp;&nbsp;&nbsp;<b><u>Outcome</u> </b>: ". $_POST['outcome'] ."";}
+else{echo "&nbsp;&nbsp;&nbsp;<b><u>Outcome</u></b> : ALL";}
+
+
+if($_POST['duration_days'])
+{
+echo "&nbsp;&nbsp;&nbsp;<b><u>Duration</u> </b>: ". $_POST['duration_days'] ." "; if($_POST['duration_days']=='<1') echo "day"; else echo "days"; }
+else{echo "&nbsp;&nbsp;&nbsp;<b><u>Duration</u></b> : ALL";}
+
+
  $query=		"SELECT
 				Month(admit_date) \"Month\",
 				Year(admit_date) \"Year\",
@@ -183,7 +249,7 @@ else{echo "&nbsp;&nbsp;&nbsp;<b><u>Delivery Location Type</u></b> : ALL";}
 				SUM(CASE WHEN visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
 				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\"				
 			FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
-			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")
+			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . $outcome . $wgt . $duration . $age_death . ")
 			GROUP BY Month(admit_date), Year(admit_date)
 			ORDER BY Year(admit_date),Month(admit_date) ASC";
 
@@ -199,7 +265,7 @@ echo "</br>";
  echo "<tr><th rowspan=\"2\">S.no</th>"; echo "<th rowspan=\"2\">Year</th>"; echo "<th rowspan=\"2\">Month</th>"; echo "<th rowspan=\"2\">Admissions</th>"; echo "<th rowspan=\"2\" align=\"center\">Not Discharged</th>"; echo "<th colspan=\"4\" align=\"center\">Discharged</th>";  echo "<th rowspan=\"2\" align=\"center\">Death</th>"; echo "<th rowspan=\"2\" align=\"center\">Mortality %</th></tr>"; 
  echo "<tr><th>Normal</th>"; echo "<th>LAMA</th>"; echo "<th>Absconded</th>"; echo "<th>Total</th>";
  echo "</thead>";
-    $csv_hdr = " S.no,Year,Month,Admissions,Not Discharged,Normal, LAMA, Absconded, Total, Death, Mortality %";
+    $csv_hdr = " S.no, Year, Month, Admissions,Not Discharged,Normal, LAMA, Absconded, Total, Death, Mortality %";
     $csv_output="";
  echo "<tbody>";
  $arr_m = array("","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
@@ -226,7 +292,7 @@ $csv_output .= $i . ", ";
  echo "<td>". $record['Year'] ."</td>";
 $csv_output .= $record['Year'] . ", ";
  echo "<td>". $arr_m[$record['Month']] ."</td>";
-$csv_output .= $record['Month'] . ", ";
+$csv_output .= $arr_m[$record['Month']] . ", ";
  echo "<td>". $totalIP ."</td>";
 $csv_output .= $totalIP . ", ";
  echo "<td>". $totalND ."</td>";
@@ -242,7 +308,7 @@ $csv_output .= $total . ", ";
  echo "<td>". $totalDH ."</td>";
 $csv_output .= $totalDH . ", ";
  echo "<td>". $totalM ."</td>";
-$csv_output .= $totalM . "\n ";
+$csv_output .= $totalM . "\n";
  echo "</tr>";
  $i++;
  }
@@ -262,7 +328,7 @@ $csv_output .= $totalM . "\n ";
 				SUM(CASE WHEN visit_id = admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"DH\",
 				SUM(CASE WHEN visit_id!= admit_id AND outcome = 'death' THEN 1 ELSE 0 END) \"TDH\"				
 			FROM patient_visits INNER JOIN patients ON patient_visits.patient_id = patients.patient_id
-			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . ")";
+			WHERE  ((admit_date BETWEEN '".$_POST['from_date']. "' AND '" . $_POST['to_date'] ."') AND (visit_type='IP')" . $dept . $unit . $area . $gender . $weight . $gest . $in_out_born . $age . $outcome . $wgt . $duration . $age_death . ")";
  
  $result_total = mysql_query($query_total);
  echo "</tbody><tfoot>";
@@ -304,8 +370,9 @@ $csv_output .= $totalM . "\n ";
  else
  
  {
- echo "<br><br><b style=\"color:red;\">No data in this given dates</b>";
- } ?>
+ echo "<br><br><b style=\"color:red;\">No data in these given dates</b>";
+ } 
+?>
 <form name="export" action="export.php" method="post">
 <input type="submit" value="Export table to CSV">
 <input type="submit" value="Print report" onclick="window.print();">

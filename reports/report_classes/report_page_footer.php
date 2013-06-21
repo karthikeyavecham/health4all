@@ -73,6 +73,7 @@ $csv_output .= $record[$report_type] . "\n ";
  ?>
 <form name="export" action="export.php" method="post">
 <input type="submit" value="Export table to CSV">
+<input type="submit" value="Print report" onclick="window.print();">
 <input type="hidden" value="<?php echo $csv_hdr; ?>" name="csv_hdr">
 <input type="hidden" value="<?php echo $csv_output; ?>" name="csv_output">
 </form>

@@ -85,8 +85,10 @@ if (isset($_POST['submit'])){
  
  if($area!='') {
  $area= "AND (" .$area. ")";
- }
- 
+ }?>
+<?php
+
+ echo "</br>";
  echo "<b><u>Report Period</u> : </b>" . date("jS M Y", strtotime($_POST['from_date'])) . " to " . date("jS M Y", strtotime($_POST['to_date'])) . "</br>";
  echo "<b><u>Department</u> : </b>"; $query_dept= "SELECT * FROM departments WHERE department_id='" . $_POST['department'] . "'"; $result_dept = mysql_query($query_dept); $record_dept = mysql_fetch_array($result_dept); if($record_dept['department']==""){echo"ALL";}else{echo "$record_dept[department]";} if(isset($_POST['unit'])){
  echo "&nbsp;&nbsp;&nbsp;&nbsp;<b><u>Unit</u> : </b>"; $a=0; foreach($_POST['unit'] as $un) { if($un!=""){$query_unit= "SELECT * FROM units WHERE unit_id='" . $un . "'"; $result_unit = mysql_query($query_unit); $record_unit = mysql_fetch_array($result_unit); if($a!='0'){echo ", ";} echo $record_unit['unit_name']; $a++;} else {echo "ALL"; break;}}  
@@ -113,15 +115,23 @@ if (isset($_POST['submit'])){
  echo "<thead>";
  echo "<tr><th>S.no</th>"; echo "<th>Year</th>"; echo "<th>Month</th>"; echo "<th>Admissions</th>"; echo "<th>Transfers</th>"; echo "<th>Total</th></tr>"; 
  echo "</thead>";
+    $csv_hdr = " S.no,Year,Month,Admissions,Transfers,Total";
+    $csv_output="";
  echo "<tbody>";
  while ($record = mysql_fetch_array($result)){
  echo "<tr>";
  echo "<td>" . $i . "</td>";
+$csv_output .= $i . ", ";
  echo "<td>" . $record['Year'] . "</td>";
+$csv_output .= $record['Year'] . ", ";
  echo "<td>" . $arr_m[$record['Month']] . "</td>";
+$csv_output .= $record['Month'] . ", ";
  echo "<td>" . $record['IP_ADMIN'] . "</td>";
+$csv_output .= $record['IP_ADMIN'] . ", ";
  echo "<td>" . $record['IP_TRANS'] . "</td>";
+$csv_output .= $record['IP_ADMIN'] . ", ";
  echo "<td>" . $record['TOTAL'] . "</td>";
+$csv_output .= $record['TOTAL'] . "\n";
  echo "</tr>";
  $m=$m+$record['IP_ADMIN']; $f=$f+$record['IP_TRANS'];  $ma=$ma+$record['TOTAL'];
  $i++;
@@ -131,7 +141,7 @@ if (isset($_POST['submit'])){
  echo "<td style=\"border-top:1px solid;\"></td>";
  echo "<td style=\"border-top:1px solid;\">Total Admissions</td>";
  echo "<td style=\"border-top:1px solid;\">" . $m . "</td>";
- echo "<td style=\"border-top:1px solid;\">" . $f . "</td>"; 
+ echo "<td style=\"border-top:1px solid;\">" . $f . "</td>";
  echo "<td style=\"border-top:1px solid;\">" . $ma . "</td>";
  echo "</tr>";
  echo "</tr>";
@@ -140,7 +150,12 @@ if (isset($_POST['submit'])){
  echo "</br></br>";
  include "../charts/adim_trans_ip_bar.php";
  ?>
- 
+<form name="export" action="export.php" method="post">
+<input type="submit" value="Export table to CSV">
+<input type="submit" value="Print report" onclick="window.print();">
+<input type="hidden" value="<?php echo $csv_hdr; ?>" name="csv_hdr">
+<input type="hidden" value="<?php echo $csv_output; ?>" name="csv_output">
+</form>
  <?php
  }
   else

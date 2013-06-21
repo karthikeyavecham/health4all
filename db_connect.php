@@ -3,7 +3,7 @@
 $dbhost = "localhost";
 
 //Username with privileges to connect to database for querying purpose
-$dbuser = "guna";
+$dbuser = "root";
 
 //Password of the above user account
 $dbpass = "password";
