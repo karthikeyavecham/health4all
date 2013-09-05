@@ -55,6 +55,7 @@
  <li><a href="report_monthwise_adim_tran_ip.php">Month Wise Admissions & Trasfers </a>
  <li><a href="report_mortality_summary.php">Mortality Report</a>
  <li><a href="report_mortality.php">Mortality Report (With breakup of transfer cases) </a>
+ <li><a href="report_treatment.php">Treatment Reports </a>
  </ol>
  <li><b>Detail</b>
  <ol>
@@ -68,6 +69,7 @@
  <li><b>Special Reports</b>
  <ol>
  <li><a href="report_pediatrics_ip.php">In-Patient Details (Admissions,Discharges,Deaths)-For SNCU</a>
+ <li><a href="outcome_reports.php">Outcome Reports - Duration/Stay etc.,</a>
  </ol>
  </td>
  </tr>

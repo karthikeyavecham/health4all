@@ -102,11 +102,11 @@ echo '<option value="'.$row['department_id'].'">'.$row['department'].'</option>'
 	$result = mysql_query($query);
 	if(mysql_num_rows($result) != 0) {
 		$i=1;
-		echo "<div class='scrollbar' style='width:940px; height:280px;'>";
-		echo "<table id=\"table-icd\">";
+		echo "<div class='scrollbar' style='width:940px; height:560px;'>";
+		echo "<table id='table-icd'>";
 		echo "<thead>";
 		echo "<tr><th colspan='11' style='border-right:solid 1px;' align='center'>Equipment Details</th>"; echo "<th colspan='5' align='center'>Last Issue Request Details</th></tr>";
-		echo "<tr><th></th><th>S.no</th>";  echo "<th>Equipment ID</th>"; echo "<th>Serial Number</th>"; echo "<th>Asset Number</th>"; 
+		echo "<tr><th>X</th><th>S.no</th>";  echo "<th>Equipment ID</th>"; echo "<th>Serial Number</th>"; echo "<th>Asset Number</th>"; 
 		echo "<th>Equipment Type</th>"; echo "<th>Department</th>";	echo "<th>Supplier</th>"; echo "<th>Suppy date</th>"; echo "<th>Service Engineer</th>"; 
 		echo "<th style='border-right:solid 1px;'>Service Eng Number</th>"; echo "<th>Issue Request ID</th>"; 
 		echo "<th>Call Info</th>"; echo "<th>Call Date</th>"; echo "<th>Working Status</th>";echo "<th>Problem Status</th>";echo"</tr>"; 

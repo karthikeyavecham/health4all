@@ -103,7 +103,7 @@
 			<td>Chief Complaint:</td>
 			<td><textarea name="chief_complaint" style='text-transform:capitalize; width:90%' rows="2" TABINDEX=8></textarea></td>
 			<td>OP Date:</td>
-			<td><input type="text" name="op_date" id="vdatepicker" value='<?php date_default_timezone_set('Asia/Kolkata'); echo date("Y/m/d"); ?>' /></td>
+			<td><input type="text" name="op_date" id="vdatepicker" value='<?php date_default_timezone_set('Asia/Kolkata'); echo date("Y/m/d"); ?>'</td>
 			<td>OP Time:</td>
 			<td><input type="text" name="op_time" style="width:150px;" id="vtimepicker" value='<?php date_default_timezone_set('Asia/Kolkata'); echo date("g:ia"); ?>'></td>
 		</tr>
