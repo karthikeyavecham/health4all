@@ -38,7 +38,7 @@ span.link a:hover span
 		var e=document.getElementById(div);
 		var b=document.getElementById(button);
 		if(e.style.display=="none"){
-			for(var i=1;i<=7;i++){
+			for(var i=1;i<=8;i++){
 				var m="div_"+i;
 				var k=document.getElementById(m)
 				k.style.display="none"
@@ -49,7 +49,7 @@ span.link a:hover span
 			e.style.display="block";
 			b.style.background="#febbbb";
 		} else {
-			for(var i=1;i<=6;i++){
+			for(var i=1;i<=7;i++){
 				var m="div_"+i;
 				var k=document.getElementById(m)
 				k.style.display="none"
@@ -77,6 +77,7 @@ span.link a:hover span
 				<tr><td><input type="button" id="button_2" value="Birth Info" onclick="reveal('div_2','button_2');" style="width:100%;"></td></tr>
 				<tr><td><input type="button" id="button_3" value="Visit/Admit Info" onclick="reveal('div_3','button_3');" style="width:100%;"></td></tr>
 				<tr id="gynic_button" <?php if($record['department_id']!=22){ echo "hidden"; }?> >
+				<tr><td><input type="button" id="button_8" value="Diagnostics" onclick="reveal('div_8','button_8');" style="width:100%;"></td></tr>
 				<td><input type="button" id="button_6" value="OBG Info" onclick="reveal('div_6','button_6');" style="width:100%;"></td></tr>
 				<tr><td><input type="button" id="button_4" value="Treatment Info" onclick="reveal('div_4','button_4');" style="width:100%;"></td></tr>
 				<tr><td><input type="button" id="button_5" value="Discharge Info" onclick="reveal('div_5','button_5');" style="width:100%;"></td></tr>
@@ -424,6 +425,9 @@ span.link a:hover span
 				</div>
 				<div id="div_6" style="display:none;">
 					<?php include("tabs/gynic/gynic_v_u.php"); ?>
+				</div>
+				<div id="div_8" style="display:none;">
+					<?php include("tabs/diagnostics/diagnostics_view.php"); ?>
 				</div>
 				<div id="div_4" style="display:none;">
 					<script type="text/javascript" src="scripts/treatment.js"></script>

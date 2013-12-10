@@ -24,6 +24,11 @@ if (isset($_POST['repeat_submit'])){
 
 	$update = mysql_query($update_patients);
 
+	$update_audiology="UPDATE audiology SET date_of_test='$_POST[date_of_test]', type_of_test='$_POST[type_of_test]', test_no='$_POST[test_no]', oael_outcome='$_POST[oael_outcome]', oaer_outcome='$_POST[oaer_outcome]', remarks='$_POST[remarks]', audiologist_id='$_POST[audiologist_id]'";
+	$updation_audiology = mysql_query($update_audiology);
+
+
+
 	$insert_patient_visits = "INSERT INTO patient_visits(visit_id, visit_type, patient_id, admit_date, admit_time, department_id, hosp_file_no, insurance_case, insurance_no, unit, area, presenting_complaints, past_history, admit_weight, pulse_rate,respiratory_rate, temperature, sbp, dbp, provisional_diagnosis, doctor, nurse, final_diagnosis, icd_10, icd_10_ext, discharge_weight, outcome, outcome_date, outcome_time, ip_file_received, mlc)
 							 VALUES (NULL, 'OP', '$_POST[patient_id]','$_POST[op_date]', '$admit_time_24', '$_POST[department]', '$_POST[hosp_file_no]', '$_POST[aarogya]', '$_POST[aarogya_number]', '$_POST[unit]', '$_POST[area]', '$_POST[chief_complaint]', '$_POST[past_history]', '$admit_weight', '$_POST[pulse_rate]', '$_POST[respiratory_rate]', '$_POST[temperature]', '$_POST[sbp]', '$_POST[dbp]', '$_POST[provisional_diagnosis]', '$_POST[doctor]', '$_POST[nurse]', '$_POST[final_diagnosis]', '$_POST[icd_10]', '$_POST[icd_10_ext]', '$discharge_weight', '$_POST[outcome]', '$_POST[outcm_date]', '$outcome_time_24', '$_POST[fileres_date]', '$_POST[mlc]')";
 	
@@ -144,7 +149,11 @@ if (isset($_POST['first_submit'])){
 	
 	$registration_2 = mysql_query($sql_patient_visits);
 	$idvis = mysql_insert_id();
+
 	
+	$insert_audiology="INSERT INTO audiology(date_of_test, type_of_test, ip_no, test_no, oael_outcome, oaer_outcome, remarks, audiologist_id)
+					VALUES ('$_POST[date_of_test]','$_POST[type_of_test]', '$_POST[hosp_file_no]', '$_POST[test_no]', '$_POST[oael_outcome]', '$_POST[oaer_outcome]', '$_POST[remarks]', '$_POST[audiologist_id]')";
+	$registration_audiology = mysql_query($insert_audiology);
 	//////////////////////////////////////////////////////
 	
 	if($_POST['mlc']=="1"){
