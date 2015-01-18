@@ -38,7 +38,7 @@ span.link a:hover span
 		var e=document.getElementById(div);
 		var b=document.getElementById(button);
 		if(e.style.display=="none"){
-			for(var i=1;i<=6;i++){
+			for(var i=1;i<=7;i++){
 				var m="div_"+i;
 				var k=document.getElementById(m)
 				k.style.display="none"
@@ -54,7 +54,7 @@ span.link a:hover span
 			b.style.borderRight="none";
 			
 		} else {
-			for(var i=1;i<=6;i++){
+			for(var i=1;i<=7;i++){
 				var m="div_"+i;
 				var k=document.getElementById(m)
 				k.style.display="none"
@@ -75,6 +75,7 @@ span.link a:hover span
 				<tr><td><input type="button" id="button_2" value="Birth Info" onclick="reveal('div_2','button_2');" style="position:relative;width:104%;"></td></tr>
 				<tr><td><input type="button" id="button_3" value="Visit/Admit Info" onclick="reveal('div_3','button_3');" style="position:relative;width:104%;"></td></tr>
 				<tr id="gynic_button" hidden><td><input type="button" id="button_6" value="OBG Info" onclick="reveal('div_6','button_6');" style="position:relative;width:104%;"></td></tr>
+				<tr id="diagnostics_button"><td><input type="button" id="button_7" value="Diagnostics" onclick="reveal('div_7','button_7');" style="position:relative;width:104%;"></td></tr>
 				<tr><td><input type="button" id="button_4" value="Treatment Info" onclick="reveal('div_4','button_4');" style="position:relative;width:104%;"></td></tr>
 				<tr><td><input type="button" id="button_5" value="Discharge Info" onclick="reveal('div_5','button_5');" style="position:relative;width:104%;"></td></tr>
 			</table>
@@ -201,33 +202,17 @@ span.link a:hover span
 							<td><input type="text" name="bc_no" style='text-transform:uppercase'></td>
 						</tr>
 						<tr>
-							<td>Gestation (in weeks)</td>
+							<td>Gestation(in weeks)</td>
 							<td>
-								<input type="text" id="gestation" name="gestation" tabindex="2" onchange="DropDownIndexClear('gesttextbox');" style="width:133px; position: absolute; z-index: 1; margin-top:-13px;" />
-								<select name="" id="gesttextbox" tabindex="1000" onchange="DropDownTextToBox(this,'gestation');" style="position: absolute; z-index: 0; width: 155px;margin-top:-13px;" >
-								<?php
-									$gestation=array('24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44');
-								for($i = 0, $size = count($gestation); $i < $size; $i++)
-								{
-										echo "<option value=\"".$gestation[$i]."\" title=\"".$gestation[$i]."\">".$gestation[$i]."</option>";
-								}
-								?>
-								</select>
-								<script language="javascript" type="text/javascript">
-									DropDownIndexClear("edqualtextbox");
-								</script>
+							 	<input type="text" name="gestation" style='text-transform:capitalize'>
 							</td>
-							<td>Delivery Mode</td>
+							<td>Gestation</td>
 							<td>
-								<select name="delivery_mode" style="width:155px">
+								<select name="gestation_type" style="width:155px">
 									<option value="" selected>---SELECT---</option>
-									<option value="SPVD">SPVD</option>
-									<option value="EL-LSCS">EL-LSCS</option>
-									<option value="EM-LSCS">EM-LSCS</option>
-									<option value="Assisted Breech Delivery">Assisted Breech Delivery</option>
-									<option value="Forcepts">Forcepts</option>
-									<option value="Vaccuum Extraction">Vaccuum Extraction</option>
-									<option value="Episiotomy">Episiotomy</option>
+									<option value="Term">Term</option>
+									<option value="Pre_Term">Pre-Term</option>
+									<option value="Post_Term">Post-Term</option>
 								</select>
 							</td>
 						</tr>
@@ -238,6 +223,7 @@ span.link a:hover span
 								<input type="radio" id="del_home" name="Del_location" ondblclick="this.checked=!this.checked" value="home">Home  
 								<input type="radio" id="del_enroute" name="Del_location" ondblclick="this.checked=!this.checked" value="enroute">Enroute
 							</td>
+							
 						</tr>
 						<tbody id="del_type" hidden>
 							<tr>
@@ -263,10 +249,24 @@ span.link a:hover span
 							</tr>
 						</tbody>
 						<tr>
+							<td>Delivery Mode</td>
+								<td>
+									<select name="delivery_mode" style="width:155px">
+									<option value="" selected>---SELECT---</option>
+									<option value="SPVD">SPVD</option>
+									<option value="EL-LSCS">EL-LSCS</option>
+									<option value="EM-LSCS">EM-LSCS</option>
+									<option value="Assisted Breech Delivery">Assisted Breech Delivery</option>
+									<option value="Forcepts">Forcepts</option>
+									<option value="Vaccuum Extraction">Vaccuum Extraction</option>
+									<option value="Episiotomy">Episiotomy</option>
+								</select>
+							</td>
 							<td>Hospital Name / Enroute Mode</td>
 							<td>
 								<input type="text" name="Del_place" style='text-transform:capitalize'>
 							</td>
+							
 						</tr>
 						<tr>
 							<td>Weight at Birth</td>
@@ -397,6 +397,10 @@ span.link a:hover span
 				<div id="div_6" style="display:none;">
 					<?php include("tabs/gynic/gynic_first.php"); ?>
 				</div>
+				<div id="div_7" style="display:none; ">
+					<?php include("tabs/diagnostics/diagnostics_first.php"); ?>
+				</div>
+				
 				<div id="div_4" style="display:none;">
 					<script type="text/javascript" src="scripts/treatment.js"></script>
 					<table width="100%" id="table-tab">

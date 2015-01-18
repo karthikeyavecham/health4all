@@ -70,6 +70,7 @@
  <ol>
  <li><a href="report_pediatrics_ip.php">In-Patient Details (Admissions,Discharges,Deaths)-For SNCU</a>
  <li><a href="outcome_reports.php">Outcome Reports - Duration/Stay etc.,</a>
+ <li><a href="audiology_reports.php">Audiology Reports </a>
  </ol>
  </td>
  </tr>

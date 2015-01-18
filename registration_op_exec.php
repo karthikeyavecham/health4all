@@ -19,10 +19,15 @@ if (isset($_POST['repeat_submit'])){
 	mysql_query("UPDATE counters SET count='$record[count]++' WHERE counter_name='OPcounter'");
 	}
 	$id=$_POST['patient_id'];
-	$update_patients = "UPDATE patients SET  name='$_POST[pname]', dob='$_POST[dob]', gender='$_POST[gender]', age_years='$_POST[age_years]', age_months='$_POST[age_months]', age_days='$_POST[age_days]', address='$_POST[address]', place='$_POST[place]', district_id='$_POST[district]', father_name='$_POST[father_name]', mother_name='$_POST[mother_name]', spouse_name='$_POST[spouse_name]', phone='$_POST[phone_no]', blood_group='$_POST[blood_group]', id_proof='$_POST[id_proof]', id_proof_number='$_POST[id_proof_no]', occupation='$_POST[occupation]', education_level='$_POST[edu_level]', education_qualification='$_POST[edu_qualification]', mr_no='$_POST[mr_no]', bc_no='$_POST[bc_no]', gestation='$_POST[gestation]', Delivery_mode='$_POST[delivery_mode]', Delivery_location='$_POST[Del_location]', Delivery_place='$_POST[Del_place]', hospital_type='$_POST[hospital_type]', delivery_location_type='$_POST[Delivery_loc_type]', delivery_plan='$_POST[booked_unbooked]', birth_weight='$birth_weight', congenital_anomalies='$_POST[congenital_anomalies]'
+	$update_patients = "UPDATE patients SET  name='$_POST[pname]', dob='$_POST[dob]', gender='$_POST[gender]', age_years='$_POST[age_years]', age_months='$_POST[age_months]', age_days='$_POST[age_days]', address='$_POST[address]', place='$_POST[place]', district_id='$_POST[district]', father_name='$_POST[father_name]', mother_name='$_POST[mother_name]', spouse_name='$_POST[spouse_name]', phone='$_POST[phone_no]', blood_group='$_POST[blood_group]', id_proof='$_POST[id_proof]', id_proof_number='$_POST[id_proof_no]', occupation='$_POST[occupation]', education_level='$_POST[edu_level]', education_qualification='$_POST[edu_qualification]', mr_no='$_POST[mr_no]', bc_no='$_POST[bc_no]', gestation='$_POST[gestation]',gestation_type='$_POST[gestation_type]', Delivery_mode='$_POST[delivery_mode]', Delivery_location='$_POST[Del_location]', Delivery_place='$_POST[Del_place]', hospital_type='$_POST[hospital_type]', delivery_location_type='$_POST[Delivery_loc_type]', delivery_plan='$_POST[booked_unbooked]', birth_weight='$birth_weight', congenital_anomalies='$_POST[congenital_anomalies]'
 						WHERE patient_id='$id'";
 
 	$update = mysql_query($update_patients);
+
+	$update_audiology="UPDATE audiology SET date_of_test='$_POST[date_of_test]', type_of_test='$_POST[type_of_test]', test_no='$_POST[test_no]', oael_outcome='$_POST[oael_outcome]', oaer_outcome='$_POST[oaer_outcome]', remarks='$_POST[remarks]', audiologist_id='$_POST[audiologist_id]'";
+	$updation_audiology = mysql_query($update_audiology);
+
+
 
 	$insert_patient_visits = "INSERT INTO patient_visits(visit_id, visit_type, patient_id, admit_date, admit_time, department_id, hosp_file_no, insurance_case, insurance_no, unit, area, presenting_complaints, past_history, admit_weight, pulse_rate,respiratory_rate, temperature, sbp, dbp, provisional_diagnosis, doctor, nurse, final_diagnosis, icd_10, icd_10_ext, discharge_weight, outcome, outcome_date, outcome_time, ip_file_received, mlc)
 							 VALUES (NULL, 'OP', '$_POST[patient_id]','$_POST[op_date]', '$admit_time_24', '$_POST[department]', '$_POST[hosp_file_no]', '$_POST[aarogya]', '$_POST[aarogya_number]', '$_POST[unit]', '$_POST[area]', '$_POST[chief_complaint]', '$_POST[past_history]', '$admit_weight', '$_POST[pulse_rate]', '$_POST[respiratory_rate]', '$_POST[temperature]', '$_POST[sbp]', '$_POST[dbp]', '$_POST[provisional_diagnosis]', '$_POST[doctor]', '$_POST[nurse]', '$_POST[final_diagnosis]', '$_POST[icd_10]', '$_POST[icd_10_ext]', '$discharge_weight', '$_POST[outcome]', '$_POST[outcm_date]', '$outcome_time_24', '$_POST[fileres_date]', '$_POST[mlc]')";
@@ -131,8 +136,8 @@ if (isset($_POST['first_submit'])){
 	mysql_query("UPDATE counters SET count='$record[count]++' WHERE counter_name='OPcounter'");
 	}
 
-	$sql_patients = "INSERT INTO patients(patient_id, name, dob, gender, age_years, age_months, age_days, address, place, district_id, father_name, mother_name, spouse_name ,phone, blood_group, id_proof, id_proof_number, occupation, education_level, education_qualification, mr_no, bc_no, gestation, Delivery_mode, Delivery_location, Delivery_place, hospital_type, delivery_location_type, delivery_plan, birth_weight, congenital_anomalies)
-				  VALUES (NULL,'$_POST[name]', '$_POST[dob]','$_POST[gender]', '$_POST[age_years]', '$_POST[age_months]', '$_POST[age_days]', '$_POST[address]', '$_POST[place]', '$_POST[district]', '$_POST[father_name]', '$_POST[mother_name]', '$_POST[spouse_name]','$_POST[phone_no]', '$_POST[blood_group]', '$_POST[id_proof]', '$_POST[id_proof_no]', '$_POST[occupation]', '$_POST[edu_level]', '$_POST[edu_qualification]', '$_POST[mr_no]', '$_POST[bc_no]', '$_POST[gestation]', '$_POST[delivery_mode]', '$_POST[Del_location]', '$_POST[Del_place]', '$_POST[hospital_type]', '$_POST[Delivery_loc_type]', '$_POST[booked_unbooked]', '$birth_weight', '$_POST[congenital_anomalies]')";
+	$sql_patients = "INSERT INTO patients(patient_id, name, dob, gender, age_years, age_months, age_days, address, place, district_id, father_name, mother_name, spouse_name ,phone, blood_group, id_proof, id_proof_number, occupation, education_level, education_qualification, mr_no, bc_no, gestation,gestation_type, Delivery_mode, Delivery_location, Delivery_place, hospital_type, delivery_location_type, delivery_plan, birth_weight, congenital_anomalies)
+				  VALUES (NULL,'$_POST[name]', '$_POST[dob]','$_POST[gender]', '$_POST[age_years]', '$_POST[age_months]', '$_POST[age_days]', '$_POST[address]', '$_POST[place]', '$_POST[district]', '$_POST[father_name]', '$_POST[mother_name]', '$_POST[spouse_name]','$_POST[phone_no]', '$_POST[blood_group]', '$_POST[id_proof]', '$_POST[id_proof_no]', '$_POST[occupation]', '$_POST[edu_level]', '$_POST[edu_qualification]', '$_POST[mr_no]', '$_POST[bc_no]', '$_POST[gestation]','$_POST[gestation_type]', '$_POST[delivery_mode]', '$_POST[Del_location]', '$_POST[Del_place]', '$_POST[hospital_type]', '$_POST[Delivery_loc_type]', '$_POST[booked_unbooked]', '$birth_weight', '$_POST[congenital_anomalies]')";
 	echo "ERROR : ". mysql_error();
 	$registration_1 = mysql_query($sql_patients);
 	$id = mysql_insert_id();
@@ -144,7 +149,11 @@ if (isset($_POST['first_submit'])){
 	
 	$registration_2 = mysql_query($sql_patient_visits);
 	$idvis = mysql_insert_id();
+
 	
+	$insert_audiology="INSERT INTO audiology(date_of_test, type_of_test, ip_no, test_no, oael_outcome, oaer_outcome, remarks, audiologist_id)
+					VALUES ('$_POST[date_of_test]','$_POST[type_of_test]', '$_POST[hosp_file_no]', '$_POST[test_no]', '$_POST[oael_outcome]', '$_POST[oaer_outcome]', '$_POST[remarks]', '$_POST[audiologist_id]')";
+	$registration_audiology = mysql_query($insert_audiology);
 	//////////////////////////////////////////////////////
 	
 	if($_POST['mlc']=="1"){
